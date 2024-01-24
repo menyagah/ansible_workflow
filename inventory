@@ -1,5 +1,5 @@
 [web_servers]
-vmserver1 ansible_host=192.168.56.1 ansible_connection=ssh ansible_ssh_port=3022 ansible_ssh_user=vmserver1
+ubuntu/jammys1 ansible_host=192.168.56.11 ansible_connection=ssh ansible_ssh_user=vagrant
 centos7 ansible_host=192.168.56.8 ansible_connection=ssh ansible_ssh_user=vagrant
 
 [db_servers]
