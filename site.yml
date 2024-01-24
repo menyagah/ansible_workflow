@@ -1,0 +1,81 @@
+---
+
+- hosts: all
+  become: true
+  pre_tasks:
+
+  - name: install updates (CentOS)
+    tags: always
+    dnf:
+      update_only: yes
+      update_cache: yes
+    when: ansible_distribution == "CentOS"
+
+
+  - name: install updates (Ubuntu)
+    tags: always
+    apt:
+      upgrade: dist
+      update_cache: yes
+    when: ansible_distribution == "Ubuntu"
+
+
+- hosts: web_servers
+  become: true
+  tasks:
+    
+  - name : install apache2 and php packages for Ubuntu
+    tags: apache,apache2,Ubuntu
+    apt:
+      name: 
+        - apache2
+        - libapache2-mod-php
+      state: latest
+    when: ansible_distribution == "Ubuntu"
+
+
+  - name : install apache2 and php packages for CentOS
+    tags: apache,CentOS,httpd
+    dnf:
+      name: 
+        - httpd
+        - php
+      state: latest
+    when: ansible_distribution == "CentOS"
+
+
+- hosts: db_servers
+  become: true
+  tasks:
+    
+    - name: install postgresql for Ubuntu
+      tags: postgresql,db,Ubuntu
+      apt:
+        name: postgresql
+        state: latest
+      when: ansible_distribution == "Ubuntu"
+
+    - name: install postgresql for CentOS
+      tags: postgresql,db,CentOS
+      dnf:
+        name: postgresql15-server
+        state: latest
+      when: ansible_distribution == "CentOS"
+
+- hosts: file_servers
+  become: true
+  tasks:
+
+    - name: install samba package
+      tags: samba,CentOS,Ubuntu
+      package:
+        name: samba
+        state: latest
+
+
+
+
+
+
+
+
